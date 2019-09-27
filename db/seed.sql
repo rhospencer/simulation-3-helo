@@ -22,3 +22,9 @@ VALUES
 VALUES 
     ('title1', 'img1', 'content1', 1),
     ('title2', 'img2', 'content2', 2);
+
+
+-- BASE GET ALL POSTS --
+
+SELECT p.title, hu.username, hu.profile_pic FROM helo_users hu
+JOIN posts p ON hu.id = p.author_id;

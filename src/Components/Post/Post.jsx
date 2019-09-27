@@ -5,7 +5,11 @@ export default class Post extends Component {
         super(props)
 
         this.state = {
-
+            title: '',
+            img: '',
+            content: '',
+            username: '',
+            profile_pic: ''
         }
     }
 
@@ -13,9 +17,11 @@ export default class Post extends Component {
         return(
             <div className="post">
                 Post
-                {this.props.el.title}
-                by {this.props.author_id}
-                {this.props.profile_pic}
+                {this.state.title}
+                {this.state.img}
+                {this.state.content}
+                {this.state.username}
+                {this.state.profile_pic}
             </div>
         )
     }

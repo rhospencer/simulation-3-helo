@@ -13,6 +13,8 @@ app.use(express.json())
 // ENDPOINTS
 app.post('/auth/register', ctrl.register)
 app.post('/auth/login', ctrl.login)
+app.get('/api/posts/:id', ctrl.getPosts)
+app.get('/api/post/:id', ctrl.getSinglePost)
 
 
 
