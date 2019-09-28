@@ -1,5 +1,4 @@
 INSERT INTO helo_users (username, password)
 VALUES 
-    ($1, $2);
-
-SELECT * FROM helo_users;
+    ($1, $2)
+RETURNING id;

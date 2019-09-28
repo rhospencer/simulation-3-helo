@@ -48,7 +48,13 @@ class Dashboard extends Component {
 
     render() {
         let postsList = this.state.posts.map(el => {
-            return <Link path={'/post/:postid'}><Post key={el.id} data={el}/></Link>
+            return <Link to={`/post/${el.id}`} key={el.id}>
+                <div className="post-box">
+                    <h3>{el.title}</h3>
+                    <p>by {el.username}</p>
+                    <img src={el.profile_poc} alt="User Profile Picture"/>
+                </div>
+            </Link>
         })
         return(
             <div className="dashboard">
