@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import Post from '../Post/Post'
-import {connect} from 'react-redux'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 
-class Dashboard extends Component {
+export default class Dashboard extends Component {
     constructor() {
         super()
 
@@ -16,7 +15,7 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        this.getPosts(this.props.id.id)
+        this.getPosts()
     }
 
     handleSearchChange(e) {
@@ -27,18 +26,18 @@ class Dashboard extends Component {
         this.setState({myPosts: !this.state.myPosts})
     }
 
-    getPosts(id) {
-        axios.get(`/api/posts/${id}?userposts=${JSON.stringify(this.state.myPosts)}&search=${this.state.search}`)
+    getPosts() {
+        axios.get(`/api/posts/?userposts=${JSON.stringify(this.state.myPosts)}&search=${this.state.search}`)
         .then(res => {
             this.setState({posts: res.data})
         })
     }
 
-    resetSearch(id) {
+    resetSearch() {
         
         console.log(this.state.search)
         console.log(this.state.myPosts)
-        axios.get(`/api/posts/${id}?userposts=${JSON.stringify(this.state.myPosts)}&search=${''}`)
+        axios.get(`/api/posts/?userposts=${JSON.stringify(this.state.myPosts)}&search=${''}`)
         .then(res => {
             console.log(res.data)
             this.setState({search: ''})
@@ -52,16 +51,15 @@ class Dashboard extends Component {
                 <div className="post-box">
                     <h3>{el.title}</h3>
                     <p>by {el.username}</p>
-                    <img src={el.profile_poc} alt="User Profile Picture"/>
+                    <img src={el.profile_pic} alt="User Profile Picture"/>
                 </div>
             </Link>
         })
         return(
             <div className="dashboard">
-                Dashboard
                 <input onChange={(e) => this.handleSearchChange(e)} value={this.state.search} placeholder="Search" type="text"/>
-                <button onClick={() => this.getPosts(this.props.id.id)}>Search</button>
-                <button onClick={() => this.resetSearch(this.props.id.id)}>Reset</button>
+                <button onClick={() => this.getPosts()}>Search</button>
+                <button onClick={() => this.resetSearch()}>Reset</button>
                 My Posts <input onChange={() => this.handleCheckBoxChange()} checked={this.state.myPosts} type="checkbox"/>
                 {postsList}
             </div>
@@ -69,11 +67,11 @@ class Dashboard extends Component {
     }
 }
 
-function mapStateToProps(reduxState) {
-    const {id} = reduxState
-    return {id}
-}
+// function mapStateToProps(reduxState) {
+//     const {id} = reduxState
+//     return {id}
+// }
 
 
-export default connect(mapStateToProps)(Dashboard)
+// export default connect(mapStateToProps)(Dashboard)
 

@@ -22,9 +22,12 @@ app.use(session({
 app.post('/auth/register', ctrl.register)
 app.post('/auth/login', ctrl.login)
 app.post('/auth/logout', ctrl.logout)
-app.get('/api/posts/:id', ctrl.getPosts)
+app.get('/api/auth/me', ctrl.getUserInfo)
+
+app.get('/api/posts', ctrl.getPosts)
 app.get('/api/post/:id', ctrl.getSinglePost)
-app.post('/api/newpost/:id', ctrl.addPost)
+app.post('/api/newpost', ctrl.addPost)
+
 
 
 

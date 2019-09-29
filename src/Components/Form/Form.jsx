@@ -3,7 +3,7 @@ import './form.css'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
-class Form extends Component {
+export default class Form extends Component {
     constructor(props) {
         super(props)
 
@@ -19,20 +19,14 @@ class Form extends Component {
     }
 
     addPost() {
-        if (this.props.id) {
-            axios.post(`/api/newpost/${this.props.id.id}`, this.state).then(res => {
+            axios.post(`/api/newpost`, this.state).then(res => {
                 this.props.history.push('/dashboard')
             })
-        } else {
-            alert('Must be logged in to create post.')
-        }
     }
 
     render() {
         return(
             <div className="form">
-                {console.log(this.props.id.id)}
-                Form
                 <input onChange={e => this.handleChange(e, 'title')} placeholder="Title" type="text" value={this.state.title}/>
                 <input onChange={e => this.handleChange(e, 'img')} placeholder="Image" type="text" value={this.state.img}/>
                 <input onChange={e => this.handleChange(e, 'content')} placeholder="Content" type="text" value={this.state.content}/>
@@ -48,10 +42,10 @@ class Form extends Component {
     }
 }
 
-function mapStateToProps(reduxState) {
-    return {
-        id: reduxState.id
-    }
-}
+// function mapStateToProps(reduxState) {
+//     return {
+//         id: reduxState.id
+//     }
+// }
 
-export default connect(mapStateToProps)(Form)
+// export default connect(mapStateToProps)(Form)

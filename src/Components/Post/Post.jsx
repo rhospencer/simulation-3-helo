@@ -27,16 +27,15 @@ export default class Post extends Component {
     render() {
         return(
             <div className="post">
-                Post
                 {this.state.title}
                 <br/>
-                {this.state.img}
+                <img src={this.state.img} alt="Post Image"/>
                 <br/>
                 {this.state.content}
                 <br/>
                 {this.state.username}
                 <br/>
-                {this.state.profile_pic}
+                <img src={this.state.profile_pic} alt="User Profile Picture"/>
             </div>
         )
     }

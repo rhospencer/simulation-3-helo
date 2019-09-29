@@ -8,10 +8,8 @@ module.exports = {
 
         const newUser = await db.add_user([username, password])
         
-        req.session.id = newUser[0].id
-        console.log(req.session)
-        console.log(newUser[0].id)
-        res.status(200).send(newUser, req.session.id)
+        req.session.userid = newUser[0].id
+        res.status(200).send({id: req.session.userid, user: newUser[0]})
     },
 
     async login(req, res) {
@@ -24,9 +22,8 @@ module.exports = {
         if (password !== user[0].password) {
             return res.status(200).send({message: 'Incorrect Password'})
         } else {
-            console.log(user)
-            res.session.id = user.id
-            return res.status(200).send(user[0])
+            req.session.userid = user[0].id
+            return res.status(200).send({id: req.session.userid, user: user[0]})
         }
     },
 
@@ -35,22 +32,30 @@ module.exports = {
         res.status(200).send({message: 'Logged Out'})
     },
 
+    async getUserInfo(req, res) {
+        const db = req.app.get('db')
+        const {userid} = req.session
+
+        const user = await db.get_user_info(userid)
+        return res.status(200).send(user[0])
+    },
+
     async getPosts(req, res) {
         const db = req.app.get('db')
-        const {id} = req.session.id
+        const {userid} = req.session
         const {userposts, search} = req.query
 
         if (userposts === 'true' && search !== '') {
-            const posts = await db.get_user_posts([`%${search}%`, id])
+            const posts = await db.get_user_posts([`%${search}%`, userid])
             return res.status(200).send(posts)
         } else if (userposts !== 'true' && !search) {
-            const posts = await db.get_unknown_posts(id)
+            const posts = await db.get_unknown_posts(userid)
             return res.status(200).send(posts)
         } else if (userposts !== 'true' && search !== '') {
             const posts = await db.get_all_posts(`%${search}%`)
             return res.status(200).send(posts)
         } else {
-            const posts = await db.get_all_user_posts(id)
+            const posts = await db.get_all_user_posts(userid)
             return res.status(200).send(posts)
         }
     },
@@ -66,11 +71,9 @@ module.exports = {
     async addPost(req, res) {
         const db = req.app.get('db')
         const {title, img, content} = req.body
-        const {id} = req.params
-        console.log(title, img, content, id)
+        const {userid} = req.session
 
-        const post = await db.add_post([title, img, content, id])
-        console.log(post)
+        const post = await db.add_post([title, img, content, userid])
         res.status(200).send({message: 'Post Added'})
 
     }
